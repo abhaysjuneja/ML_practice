@@ -4,12 +4,18 @@
         "dockerfile": "Dockerfile"
     },
 
+    "mount":"",
+
     "settings": { 
         "python.defaultInterpreterPath": "/opt/conda/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
         "editor.defaultFormatter": "ms-python.black-formatter",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "python.linting.pylintArgs": [
+            "--errors-only",
+            "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
+            ]
     },
 
     "extensions": [
