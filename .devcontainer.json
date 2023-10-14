@@ -1,0 +1,25 @@
+{
+    "name": "ml_torch_practice",
+    "build": { 
+        "dockerfile": "Dockerfile"
+    },
+
+    "settings": { 
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+    },
+
+    "extensions": [
+        "ms-python.python",
+        "ms-python.pylint",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "njpwerner.autodocstring"
+    ],
+    
+    "runArgs": ["--gpus","all"
+    ]
+}
