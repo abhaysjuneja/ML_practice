@@ -8,10 +8,11 @@ from tqdm import tqdm
 
 from data import trainloader
 
-NUM_EPOCHS = 2
+NUM_EPOCHS = 20
 USE_MPS = False
 USE_CUDA = True
 PATH = "./cifar_net.pth"
+PBAR_DESC = "Epoch: {epoch}, loss: {loss}"
 
 
 def device_setup() -> Dict[str, Any]:
@@ -42,7 +43,7 @@ def train_setup(device: torch.device = torch.device("cpu")) -> Dict[str, Any]:
     classifier = classifier.to(device)
 
     loss_fn = nn.CrossEntropyLoss()
-    sgd = optim.SGD(classifier.parameters(), lr=0.001, momentum=0.9)
+    sgd = optim.SGD(classifier.parameters(), lr=0.01, momentum=0.9)
 
     return {"net": classifier, "criterion": loss_fn, "optimizer": sgd, "device": device}
 
@@ -62,8 +63,13 @@ def train(
         optimizer (optim.Optimizer): [description]
     """
     for epoch in range(NUM_EPOCHS):
-        running_loss = 0.0
-        for idx, data in tqdm(enumerate(trainloader), total=len(trainloader)):
+        for _, data in (
+            pbar := tqdm(
+                enumerate(trainloader),
+                total=len(trainloader),
+                desc=PBAR_DESC.format(epoch=epoch, loss=0.0),
+            )
+        ):
             inputs, labels = data
             # move data batch to device
             inputs = inputs.to(device)
@@ -77,11 +83,8 @@ def train(
 
             optimizer.step()
 
-            running_loss += loss
-
-            if idx % 2000 == 1999:  # print every 2000 mini-batches
-                print(f"[{epoch + 1}, {idx + 1:5d}] loss: {running_loss / 2000:.3f}")
-                running_loss = 0.0
+            loss_to_report = loss.item()
+            pbar.set_description(PBAR_DESC.format(epoch=epoch, loss=loss_to_report))
 
     print("Done")
     torch.save(net.state_dict(), PATH)
