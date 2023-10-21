@@ -83,7 +83,7 @@ def train(
 
             optimizer.step()
 
-            loss_to_report = loss.item()
+            loss_to_report = round(loss.item(), 3)
             pbar.set_description(PBAR_DESC.format(epoch=epoch, loss=loss_to_report))
 
     print("Done")
