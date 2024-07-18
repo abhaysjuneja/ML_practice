@@ -15,6 +15,7 @@ PATH = "./cifar_net.pth"
 PBAR_DESC = "Epoch: {epoch}, loss: {loss}"
 
 
+# TODO: Docker files and run.sh only work on ubuntu. For mac, use poetry with poetry shell.
 def device_setup() -> Dict[str, Any]:
     """_summary_
 
